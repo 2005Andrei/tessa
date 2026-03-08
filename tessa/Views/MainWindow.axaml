@@ -149,21 +149,21 @@
                     </Border>
 
 
-                    <!-- A shitty dockbar -->
+                    <!-- A bad dockbar -->
 
-                    <Border Background="black" Grid.Row="2" Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Border Classes="BackgroundBlur" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" Spacing="0">
-                                <Button Foreground="white" Margin="5" Command="{Binding ApiCall}" CommandParameter="pdf">Extract PDF</Button>
-                                <Border Width="2" Background="Black" Margin="0" />
-                                <Button Foreground="white" Margin="5">Translate PDF</Button>
-                                <Border Width="2" Background="Black" Margin="0" />
-                                <Button Foreground="white" Margin="5">Extract Word</Button>
-                                <Border Width="2" Background="Black" Margin="0" />
-                                <Button Foreground="white" Margin="5">Translate Word</Button>
-                            </StackPanel>
-                        </Border>
-                    </Border>
+                    <!-- <Border Background="black" Grid.Row="2" Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"> -->
+                    <!--     <Border Classes="BackgroundBlur" VerticalAlignment="Center" HorizontalAlignment="Center"> -->
+                    <!--         <StackPanel Orientation="Horizontal" Spacing="0"> -->
+                    <!--             <Button Foreground="white" Margin="5" Command="{Binding ApiCall}" CommandParameter="pdf">Extract PDF</Button> -->
+                    <!--             <Border Width="2" Background="Black" Margin="0" /> -->
+                    <!--             <Button Foreground="white" Margin="5">Translate PDF</Button> -->
+                    <!--             <Border Width="2" Background="Black" Margin="0" /> -->
+                    <!--             <Button Foreground="white" Margin="5">Extract Word</Button> -->
+                    <!--             <Border Width="2" Background="Black" Margin="0" /> -->
+                    <!--             <Button Foreground="white" Margin="5">Translate Word</Button> -->
+                    <!--         </StackPanel> -->
+                    <!--     </Border> -->
+                    <!-- </Border> -->
 
 
 

@@ -7,22 +7,23 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
-    <ItemGroup>
-        <Folder Include="Models\" />
-        <AvaloniaResource Include="Assets\**" Exclude="Assets\tessdata\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <AvaloniaResource Include="Assets\**" Exclude="Assets\tessdata\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="Assets\tessa\*.traneddata">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\tessdata\configs\**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\tessdata\tessconfigs\**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
+  <ItemGroup>
+      <Content Include="Assets\tessdata\*.traineddata">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\tessdata\configs\**">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\tessdata\tessconfigs\**">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.12" />

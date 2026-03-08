@@ -11,9 +11,8 @@ async def root():
 
 @app.post("/test")
 async def get_tessdata(payload: dict):
-    print(f"\nFucking payload: {payload['message']}\n")
-
-    document = create_doc()
+    print(f"Payload: {payload}")
+    document = create_doc(payload['texts'])
 
     buffer = io.BytesIO()
     document.save(buffer)

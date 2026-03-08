@@ -6,12 +6,10 @@ using System.Linq;
 using System;
 using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
-using HarfBuzzSharp;
 using Tesseract;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
-using Tmds.DBus.Protocol;
 using System.Diagnostics;
 
 
@@ -78,8 +76,10 @@ public partial class MainWindowViewModel : ViewModelBase {
 
     [RelayCommand]
     public async Task ApiCall(string doc_type) {
+        Collection<string?>? texts = await GetTextFromImgs();
         var payload = new {
-            Message = "Hello"
+            Message = "Hello",
+            Texts = texts
         };
 
 
@@ -87,7 +87,7 @@ public partial class MainWindowViewModel : ViewModelBase {
         // var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
         string saveDir = AppDomain.CurrentDomain.BaseDirectory;
-        string filePath = Path.Combine(saveDir, "tessa.docx");
+        string filePath = Path.Combine(saveDir, "tessa (1).docx");
 
         try {
             using HttpResponseMessage response = await client.PostAsJsonAsync("/test", payload);
@@ -122,10 +122,6 @@ public partial class MainWindowViewModel : ViewModelBase {
         }
     }
 
-
-
-
-
     public async Task<Collection<string>>? GetTextFromImgs() {
         string langCode = "";
 
@@ -157,12 +153,13 @@ public partial class MainWindowViewModel : ViewModelBase {
 
 
                     Texts.Add(page.GetText());
-
+                    Console.WriteLine($"Page text: {page.GetText()}");
+                    // Console.WriteLine(page.GetHOCRText(1, true));
                 }
 
             }
             catch (Exception e) {
-                Console.WriteLine($"err: {e.Message}");
+                Console.WriteLine($"task err: {e.InnerException}");
             }
         });
 

@@ -1,10 +1,15 @@
 import io
+import re
 from docx import Document
 from docx.shared import Inches
+from bs4 import BeautifulSoup
 
-def create_doc():
+
+def create_doc(texts):
     doc = Document()
-    doc.add_heading("A heeading", 0)
-    doc.add_paragraph("A paragraph")
-    
+
+    for text in texts:
+        doc.add_paragraph(text)
+
     return doc
+
