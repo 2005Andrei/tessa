@@ -1,0 +1,170 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:tessa.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="tessa.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="tessa">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto, *">
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Extract">
+                        <MenuItem Header="_PDF" />
+                        <MenuItem Header="_Word" />
+                    </MenuItem>
+                    <MenuItem Header="_Not yet" />
+                    <MenuItem Header="_Not yet" />
+                    <MenuItem Header="_Not yet" />
+                </MenuItem>
+
+
+                <MenuItem Header="_Config">
+
+                    <MenuItem Header="Document Language" ItemsSource="{Binding Languages}">
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LangItem">
+                                <TextBlock Text="{Binding LanguageName}" />
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+
+                        <MenuItem.ItemContainerTheme>
+                            <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" x:DataType="vm:LangItem">
+                                <Setter Property="ToggleType" Value="CheckBox" />
+                                <Setter Property="IsChecked" Value="{Binding IsDocument, Mode=TwoWay}" />
+                            </ControlTheme>
+                        </MenuItem.ItemContainerTheme>
+                    </MenuItem>
+
+                    <MenuItem Header="Translate to" ItemsSource="{Binding Languages}">
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate x:DataType="vm:LangItem">
+                                <TextBlock Text="{Binding LanguageName}" />
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+
+                        <MenuItem.ItemContainerTheme>
+                            <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" x:DataType="vm:LangItem">
+                                <Setter Property="ToggleType" Value="CheckBox" />
+                                <Setter Property="IsChecked" Value="{Binding IsTranslate, Mode=TwoWay}" />
+                            </ControlTheme>
+                        </MenuItem.ItemContainerTheme>
+                    </MenuItem>
+
+                    <MenuItem Header="_Work in progress" />
+                </MenuItem>
+
+
+
+                <MenuItem Header="_View">
+                    <!-- reference in axaml variables with #, otherwise it'll look for it in mainwindow cs file -->
+                    <MenuItem ToggleType="CheckBox" IsChecked="{Binding #Sidebar.IsPaneOpen, Mode=TwoWay}" Header="Sidebar"/>
+                    <MenuItem Header="_wip" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <SplitView x:Name="Sidebar" OpenPaneLength="150" DisplayMode="Inline" Grid.Row="1">
+            <SplitView.Pane>
+                <!-- the actual content -->
+                <StackPanel>
+                    <TextBlock>Some random text at the moment</TextBlock>
+                </StackPanel>
+            </SplitView.Pane>
+
+            <!-- the rest of the page -->
+            <SplitView.Content>
+                <Grid RowDefinitions="100, *, 100" ColumnDefinitions="*">
+                    <TextBlock Grid.Row="0">Tessa - translate and generate docx and pdfs</TextBlock>
+                    
+
+                    <!-- <Grid IsVisible="false" ColumnDefinitions="300, *"> -->
+                    <!--     <TextBlock>Alternative dihsign</TextBlock> -->
+                    <!-- </Grid> -->
+
+                    
+                    <!-- Main btn for files -->
+
+                    <Border BorderBrush="#b7adcf"
+                        VerticalAlignment="Stretch"
+                        Grid.Row="1"
+                        BorderThickness="1.2"
+                        CornerRadius="5"
+                        MaxWidth="600"
+                        MaxHeight="500"
+                        Margin="50"
+                        DragDrop.AllowDrop="True"
+                        DragDrop.Drop="DropTarget_Drop">
+
+                        <!-- Sth interesting to note: when you hover over the button, the properties of border get applied, but when you don't hover over it, it the style of the Button -->
+
+                        <Button HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            x:Name="FileBtn"
+                            Click="FileUpload">
+
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <StackPanel IsVisible="{Binding !HasFiles}" Spacing="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="Drag images here or click to browse" />
+                                </StackPanel>
+
+                                <ItemsControl IsVisible="{Binding HasFiles}" 
+                                    ItemsSource="{Binding UploadedFiles}" 
+                                    Margin="20">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="8">
+                                                <Image Source="{Binding Preview}" 
+                                                    Width="34" 
+                                                    Height="60" 
+                                                    Stretch="UniformToFill" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Button>
+
+                    </Border>
+
+
+                    <!-- A shitty dockbar -->
+
+
+
+
+
+
+
+
+
+
+                </Grid>
+
+            </SplitView.Content>
+
+        </SplitView>
+
+
+    </Grid>
+
+
+
+
+</Window>

@@ -1,0 +1,21 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <!-- Add Controls for Previewer Here -->
+    </Border>
+  </Design.PreviewWith>
+
+
+    <Style Selector="Border.BackgroundBlur">
+        <!-- BorderThickness="2" BorderBrush="black" CornerRadius="40" HorizontalAlignment="Center" ClipToBounds="True" Padding="2" -->
+        
+        <Setter Property="Background" Value="#30ffffff" /> <!-- #80000000 -->
+        <Setter Property="BorderBrush" Value="black" />
+        <Setter Property="CornerRadius" Value="40" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="ClipToBounds" Value="True" />
+        <Setter Property="Padding" Value="2" />
+
+    </Style>
+</Styles>
