@@ -4,6 +4,15 @@ using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Linq;
 using System;
+using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using HarfBuzzSharp;
+using Tesseract;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Json;
+using Tmds.DBus.Protocol;
+using System.Diagnostics;
 
 
 namespace tessa.ViewModels;
@@ -45,6 +54,9 @@ public partial class MainWindowViewModel : ViewModelBase {
     public ObservableCollection<ImagePreview> UploadedFiles { get; } = new ObservableCollection<ImagePreview>();
     public bool HasFiles => UploadedFiles.Count > 0;
     public bool Processing = false;
+    private static HttpClient client = new HttpClient() {
+        BaseAddress = new Uri("http://localhost:8000/")
+    };
 
     public ObservableCollection<LangItem> Languages { get; } = new ObservableCollection<LangItem>() {
         new LangItem("German", "deu"),
@@ -64,6 +76,99 @@ public partial class MainWindowViewModel : ViewModelBase {
         new LangItem("Russian", "rus"),
     };
 
+    [RelayCommand]
+    public async Task ApiCall(string doc_type) {
+        var payload = new {
+            Message = "Hello"
+        };
+
+
+        // string jsonPayload = JsonSerializer.Serialize(payload);
+        // var httpContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+        string saveDir = AppDomain.CurrentDomain.BaseDirectory;
+        string filePath = Path.Combine(saveDir, "tessa.docx");
+
+        try {
+            using HttpResponseMessage response = await client.PostAsJsonAsync("/test", payload);
+
+            if (response.IsSuccessStatusCode) {
+                using (Stream stream = await response.Content.ReadAsStreamAsync()) {
+                    using (Stream outStream = File.Open(filePath, FileMode.Create)) {
+                        await stream.CopyToAsync(outStream);
+                    }
+                }
+            }
+
+            Console.WriteLine("great success");
+            OpenWordDocument(filePath);
+
+        }
+        catch (Exception e) {
+            Console.WriteLine($"At the ApiCall: {e.Message}");
+        }
+    }
+
+    static void OpenWordDocument(string filePaht) {
+        try {
+            ProcessStartInfo process = new ProcessStartInfo {
+                FileName = filePaht,
+                UseShellExecute = true
+            };
+            Process.Start(process);
+        }
+        catch (Exception e) {
+            Console.WriteLine($"Err: {e.Message}");
+        }
+    }
+
+
+
+
+
+    public async Task<Collection<string>>? GetTextFromImgs() {
+        string langCode = "";
+
+        foreach (var item in Languages) {
+            if (item.IsDocument) {
+                langCode += String.IsNullOrEmpty(langCode) ? $"{item.Code}" : $"+{item.Code}";
+            }
+        }
+
+        Console.WriteLine($"Code: {langCode}");
+
+        if (!this.UploadedFiles.Any()) {
+            Console.WriteLine("I'll send a notification to the user");
+            return null;
+        }
+
+        Collection<string> Texts = new Collection<string>();
+
+        await Task.Run(() => {
+            try {
+                this.Processing = true;
+                TesseractEngine engine = new TesseractEngine(Path.Combine(AppContext.BaseDirectory, "Assets", "tessdata"), langCode, EngineMode.Default);
+
+
+                foreach (var file in UploadedFiles) {
+                    using var img = Pix.LoadFromFile(file.FilePath);
+                    using var page = engine.Process(img);
+
+
+
+                    Texts.Add(page.GetText());
+
+                }
+
+            }
+            catch (Exception e) {
+                Console.WriteLine($"err: {e.Message}");
+            }
+        });
+
+        return Texts;
+    }
+
     public void AddFiles(IEnumerable<string> newFiles) {
         bool filesAdded = false;
 
@@ -80,4 +185,6 @@ public partial class MainWindowViewModel : ViewModelBase {
             OnPropertyChanged(nameof(HasFiles));
         }
     }
+
+
 }

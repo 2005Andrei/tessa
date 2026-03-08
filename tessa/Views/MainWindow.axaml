@@ -18,8 +18,8 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Extract">
-                        <MenuItem Header="_PDF" />
-                        <MenuItem Header="_Word" />
+                        <MenuItem Header="_PDF" Command="{Binding ApiCall}" CommandParameter="pdf" />
+                        <MenuItem Header="_Word" Command="{Binding ApiCall}" CommandParameter="word" />
                     </MenuItem>
                     <MenuItem Header="_Not yet" />
                     <MenuItem Header="_Not yet" />
@@ -75,15 +75,20 @@
         <SplitView x:Name="Sidebar" OpenPaneLength="150" DisplayMode="Inline" Grid.Row="1">
             <SplitView.Pane>
                 <!-- the actual content -->
-                <StackPanel>
+                <Border HorizontalAlignment="Center">
                     <TextBlock>Some random text at the moment</TextBlock>
-                </StackPanel>
+                </Border>
             </SplitView.Pane>
 
             <!-- the rest of the page -->
             <SplitView.Content>
                 <Grid RowDefinitions="100, *, 100" ColumnDefinitions="*">
-                    <TextBlock Grid.Row="0">Tessa - translate and generate docx and pdfs</TextBlock>
+                    <Border Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" Margin="0 5">Tessa - translate and generate docx and pdfs</TextBlock>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Margin="0 5">docx's for now</TextBlock>
+                        </StackPanel>
+                    </Border>
                     
 
                     <!-- <Grid IsVisible="false" ColumnDefinitions="300, *"> -->
@@ -146,12 +151,19 @@
 
                     <!-- A shitty dockbar -->
 
-
-
-
-
-
-
+                    <Border Background="black" Grid.Row="2" Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Border Classes="BackgroundBlur" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="0">
+                                <Button Foreground="white" Margin="5" Command="{Binding ApiCall}" CommandParameter="pdf">Extract PDF</Button>
+                                <Border Width="2" Background="Black" Margin="0" />
+                                <Button Foreground="white" Margin="5">Translate PDF</Button>
+                                <Border Width="2" Background="Black" Margin="0" />
+                                <Button Foreground="white" Margin="5">Extract Word</Button>
+                                <Border Width="2" Background="Black" Margin="0" />
+                                <Button Foreground="white" Margin="5">Translate Word</Button>
+                            </StackPanel>
+                        </Border>
+                    </Border>
 
 
 
